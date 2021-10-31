@@ -26,7 +26,12 @@ function startGame(){
 }
 
 function turnClick(square){ //Runs when human player clicks the target
-    turn(square.target.id, humanPlayer)
+    if (typeof originalBoard[square.target.id] == 'number') { //If no one has played in a clicked spot
+        
+    turn(square.target.id, humanPlayer) //Human Player Plays
+    if (!checkWin(originalBoard, humanPlayer) && !checkTie()) turn(bestSpot(), aiPlayer) //Computer Player Plays
+ 
+}
 }
 
 function turn (squareId, player) { //Runs when turn is made (By either human or AI)
@@ -55,4 +60,32 @@ function gameOver(gameWon){
     for(let i = 0; i < cells.length; i++){
         cells[i].removeEventListener('click', turnClick, false);
     }
+    declareWinner(gameWon.player == humanPlayer ? "You win!" : "You lose.")
+}
+
+function declareWinner(who) {
+    document.querySelector(".endgame").style.display = "flex";
+    document.querySelector(".endgame .text").innerText = who;
+
+}
+
+function emptySquares(){
+    return originalBoard.filter(n => typeof n === 'number');
+}
+
+function bestSpot() { 
+    return emptySquares()[0]; //Find first playable field and play here (Random AI)
+}
+
+function checkTie(){
+    if (emptySquares().length == 0){
+
+        for (let i = 0; i < cells.length; i++){
+            cells[i].style.backgroundColor = 'green';
+            cells[i].removeEventListener('click', turnClick, false);
+        }
+        declareWinner("Tie Game!")
+        return true;
+    }
+    return false;
 }
