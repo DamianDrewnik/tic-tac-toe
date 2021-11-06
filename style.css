@@ -32,8 +32,9 @@ table  tr td:last-child{
 }
 
 .endgame{
-    display: none;
-    justify-content: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
     align-items: center;
     width: 200px;
     height: 100px;
@@ -52,3 +53,4 @@ table  tr td:last-child{
 .text{
     font-size: 30px;
 }
+
